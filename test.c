@@ -3,19 +3,27 @@
 #include <unistd.h>
 #include <string.h>
 #include "main.h"
+
+/**
+ * _printf - Replica of printf funtion
+ * @format: contains normal characters & format specifiers
+ *
+ * Return: Length of String
+ */
 int _printf(const char *format, ...)
 {
 	int i = 0, len = 0;
-	char char_,char_format ;
-	char * string;
+	char char_, char_format;
+	char *string;
 	va_list arg;
+
 	va_start(arg, format);
 
 	if (format)
 	{
 		while (format[i])
 		{
-			if (format[i] =='%')
+			if (format[i] == '%')
 			{
 				i++;
 				if (format[i] == 'c')
@@ -24,7 +32,6 @@ int _printf(const char *format, ...)
 					write(1, &char_, 1);
 					len++;
 				}
-
 				else if (format[i] == 's')
 				{
 					string = va_arg(arg, char *);
@@ -33,16 +40,12 @@ int _printf(const char *format, ...)
 				}
 				i++;
 			}
-
 			if (format[i] == '%')
 				continue;
-
 			char_format = format[i];
-
-			if(char_format == '\0')
+			if (char_format == '\0')
 				break;
-
-			write(1, &char_format, 1); 
+			write(1, &char_format, 1);
 			i++;
 			len++;
 		}
