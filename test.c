@@ -18,7 +18,6 @@ int _printf(const char *format, ...)
 	va_list arg;
 
 	va_start(arg, format);
-
 	if (format)
 	{
 		while (format[i])
@@ -40,6 +39,8 @@ int _printf(const char *format, ...)
 				}
 				i++;
 			}
+			else
+				return (-1);
 			if (format[i] == '%')
 				continue;
 			char_format = format[i];
@@ -50,6 +51,5 @@ int _printf(const char *format, ...)
 			len++;
 		}
 	}
-	va_end(arg);
 	return (len);
 }
