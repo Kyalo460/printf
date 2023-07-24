@@ -18,7 +18,7 @@ int print_string(int len, va_list arg)
 	string = va_arg(arg, char *);
 
 	if (string == NULL)
-		string = "(NULL)";
+		string = "(null)";
 
 	write(1, string, strlen(string));
 	len += strlen(string);
@@ -57,6 +57,49 @@ int print_perc(int len)
 	return (len);
 }
 /**
+  *check_char - checks if character is special
+  *@format: contains a character
+  *@len: length of output
+  *@arg: list of variadic arguments
+  *
+  *Return: Length of String (if success)
+  */
+int check_char(char format, int len, va_list arg)
+{
+	if (format == 'c')
+	{
+		len = print_char(len, arg);
+		return (len);
+	}
+
+	else if (format == 's')
+	{
+		len = print_string(len, arg);
+		return (len);
+	}
+
+	else if (format == '%')
+	{
+		len = print_perc(len);
+		return (len);
+	}
+
+	else if (format == ' ')
+		return (-1);
+
+	else if (format == '\0')
+		return (-1);
+
+	else
+	{
+		len = print_perc(len);
+		write(1, &format, 1);
+		len++;
+	}
+
+	return (len);
+}
+/**
   *_printf - Replica of printf funtion
   *@format: contains normal characters & format specifiers
   *
@@ -66,38 +109,33 @@ int _printf(const char *format, ...)
 {
 	int i = 0, len = 0;
 	char char_format;
-	/*char *string;*/
 	va_list arg;
 
 	va_start(arg, format);
 	if (format != NULL)
 	{
-		for (i = 0; format[i]; i++)
+		while (format[i])
 		{
 			if (format[i] == '%')
 			{
 				i++;
-				if (format[i] == 'c')
-					len = print_char(len, arg);
-
-				else if (format[i] == 's')
-					len = print_string(len, arg);
-
-				else if (format[i] == '%')
-					len = print_perc(len);
-
-				else
+				if (format[i] == '\0')
 					return (-1);
+				char_format = format[i];
 
+				len = check_char(char_format, len, arg);
 				i++;
 			}
-			if (format[i] == '%')
-				continue;
-			char_format = format[i];
-			if (char_format == '\0')
-				break;
-			write(1, &char_format, 1);
-			len++;
+			else if (format[i] != '%' && format[i] != '\0' && len != -1)
+			{
+				char_format = format[i];
+				write(1, &char_format, 1);
+				len++;
+				i++;
+			}
+			else
+				return (-1);
+
 		}
 	}
 	else
