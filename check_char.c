@@ -27,6 +27,12 @@ int check_char(char format, int len, va_list arg)
 		return (len);
 	}
 
+	else if (format == 'd' || format == 'i')
+	{
+		len = print_int(len, arg);
+		return (len);
+	}
+
 	else if (format == ' ')
 		return (-1);
 

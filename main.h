@@ -16,4 +16,6 @@ int print_string(int len, va_list arg);
 int print_char(int len, va_list arg);
 int print_perc(int len);
 int check_char(char format, int len, va_list arg);
+int print_int(int len, va_list arg);
+int print_num(int len, int num);
 #endif
